@@ -12,12 +12,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.Collection;
 import java.util.Random;
 
 import static io.getarrays.server.enumeration.Status.SERVER_DOWN;
 import static io.getarrays.server.enumeration.Status.SERVER_UP;
-import static sun.security.pkcs11.wrapper.PKCS11Constants.TRUE;
+import static java.lang.Boolean.TRUE;
 
 
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ import static sun.security.pkcs11.wrapper.PKCS11Constants.TRUE;
 @Slf4j
 public class ServerServiceImpl implements ServerService {
     private final ServerRepository serverRepository;
+
     @Override
     public Server create(Server server) {
         log.info("Saving new server: {}", server.getName());
@@ -71,5 +74,16 @@ public class ServerServiceImpl implements ServerService {
     private String setServerImageUrl() {
         String[] imageNames = {"server1.png", "server2.png", "server3.png", "server4.png"};
         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/server/image/" + imageNames[new Random().nextInt(4)]).toUriString();
+    }
+
+    private boolean isReachable(String ipAddress, int port, int timeOut) {
+        try {
+            try(Socket socket = new Socket()) {
+                socket.connect(new InetSocketAddress(ipAddress, port), timeOut);
+            }
+            return true;
+        }catch (IOException exception){
+            return  false;
+        }
     }
 }
