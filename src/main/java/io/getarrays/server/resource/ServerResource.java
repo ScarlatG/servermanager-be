@@ -29,7 +29,7 @@ public class ServerResource {
     public ResponseEntity<Response> getServers() {
         return ResponseEntity.ok(
                 Response.builder()
-                        .timeStep(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
                         .data(of("servers", serverService.list(30)))
                         .message("Servers retrieved")
                         .status(OK)
@@ -43,7 +43,7 @@ public class ServerResource {
         Server server = serverService.ping(ipAddress);
         return ResponseEntity.ok(
                 Response.builder()
-                        .timeStep(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
                         .data(of("server", server))
                         .message(server.getStatus() == SERVER_UP ? "Ping success" : "Ping failed")
                         .status(OK)
@@ -56,7 +56,7 @@ public class ServerResource {
     public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
         return ResponseEntity.ok(
                 Response.builder()
-                        .timeStep(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
                         .data(of("server", serverService.create(server)))
                         .message("Server created")
                         .status(CREATED)
@@ -69,7 +69,7 @@ public class ServerResource {
     public ResponseEntity<Response> getServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(
                 Response.builder()
-                        .timeStep(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
                         .data(of("server", serverService.get(id)))
                         .message("Server retrieved")
                         .status(OK)
@@ -82,7 +82,7 @@ public class ServerResource {
     public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(
                 Response.builder()
-                        .timeStep(LocalDateTime.now())
+                        .timeStamp(LocalDateTime.now())
                         .data(of("deleted", serverService.delete(id)))
                         .message("Server deleted")
                         .status(OK)
